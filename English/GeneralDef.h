@@ -1,6 +1,6 @@
 // GeneralDef.h
 #ifndef GNRAL_DEF_H 
-    #define GNRAL_DEF_H "V: 1.4 | NumH: 3"
+    #define GNRAL_DEF_H "V: 1.4 | NumHeader: 3"
 
     #define WINDOWS_32BIT 0x10
     #define WINDOWS_64BIT 0x20
