@@ -1,6 +1,6 @@
 // TypesDef.h
 #ifndef TYPES_DEF_H
-    #define TYPES_DEF_H "V: 2.1 | NumHeader: 6"
+    #define TYPES_DEF_H "V: 2.1 | NumH: 6"
 
     #define NO_64BIT 0
     #define BOTH_64BIT 1
