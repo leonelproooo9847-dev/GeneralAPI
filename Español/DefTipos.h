@@ -1,19 +1,20 @@
 // DefTipos.h
 #ifndef TIPOS_CAB_H
-    #define TIPOS_CAB_H "V: 2.1 | NumCab: 6"
-    
-    #define NINGUN_64BIT 0
-    #define AMBOS_64BIT 1
+    #define TIPOS_CAB_H "NumCab: 2"
+    #define CAMBIO_DEF_TIPOS 1
+
     #define SOLO_64BIT_SIN_SIGNO 2
     #define SOLO_64BIT_CON_SIGNO 3
-    /*                               -\
-    |  @attention: Esta cabecera no-  |
+    /* @attention: Esta cabecera no- *\
     |  garantiza seguridad y consis-  |
     |  tencia entre implementaciones. |
     |                                 |
+    |  @note: Esta cabecera solo      |
+    |  será en español.               |
+    |                                 |
     |  pd: Me cuesta hacerlo en el    |
     |  celular :P                     |
-    \-                               */ 
+    \*                               */ 
 
     #if defined(__GNUC__) || defined(__clang__)
 
@@ -69,12 +70,6 @@
                 #error "'__UINT32_TYPE__' no está definido"
             #endif
 
-            #ifdef __SIZE_TYPE__
-                typedef __SIZE_TYPE__ size_t;
-            #else
-                #error "'__SIZE_TYPE__' no está definido"
-            #endif
-
             #ifdef __UINT64_TYPE__
                 typedef __UINT64_TYPE__ U64;
             #else
@@ -85,13 +80,13 @@
             //IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
         
             #if defined(__INT64_TYPE__) && defined(__UINT64_TYPE__)
-                #define ESTA_DISPONIBLE_64BIT AMBOS_64BIT
+                #define ESTA_DISPONIBLE_64BIT 1
             #elif defined(__INT64_TYPE__) && !(defined(__UINT64_TYPE__))
                 #define ESTA_DISPONIBLE_64BIT SOLO_64BIT_CON_SIGNO
             #elif !(defined(__INT64_TYPE__)) && defined(__UINT64_TYPE__)
                 #define ESTA_DISPONIBLE_64BIT SOLO_64BIT_SIN_SIGNO
             #else
-                #define ESTA_DISPONIBLE_64BIT NINGUN_64BIT
+                #define ESTA_DISPONIBLE_64BIT 0
             #endif
         #else
             #error "'__CHAR_BIT__' no es de 8 bit"
