@@ -1,6 +1,7 @@
 // DefGeneral.h
 #ifndef DEF_GNRAL_H 
-    #define DEF_GNRAL_H "V: 1.4 | NumCab: 3"
+    #define DEF_GNRAL_H "NumCab: 1"
+    #define CAMBIO_DEF_GENERAL 1
 
     #define WINDOWS_32BIT 0x10
     #define WINDOWS_64BIT 0x20
@@ -33,23 +34,23 @@
     typedef unsigned char Bool_t;
     typedef unsigned char BoolBit_t;
 
-    #define Si_BIT0 (0b00000001)
-    #define Si_BIT1 (0b00000010)
-    #define Si_BIT2 (0b00000100)
-    #define Si_BIT3 (0b00001000)
-    #define Si_BIT4 (0b00010000)
-    #define Si_BIT5 (0b00100000)
-    #define Si_BIT6 (0b01000000)
-    #define Si_BIT7 (0b10000000)
+    #define Si_BIT0 0x01    // 0b00000001
+    #define Si_BIT1 0x02    // 0b00000010
+    #define Si_BIT2 0x04    // 0b00000100
+    #define Si_BIT3 0x08    // 0b00001000
+    #define Si_BIT4 0x10    // 0b00010000
+    #define Si_BIT5 0x20    // 0b00100000
+    #define Si_BIT6 0x40    // 0b01000000
+    #define Si_BIT7 0x80    // 0b10000000
 
-    #define No_BIT0 (~(0b00000001))
-    #define No_BIT1 (~(0b00000010))
-    #define No_BIT2 (~(0b00000100))
-    #define No_BIT3 (~(0b00001000))
-    #define No_BIT4 (~(0b00010000))
-    #define No_BIT5 (~(0b00100000))
-    #define No_BIT6 (~(0b01000000))
-    #define No_BIT7 (~(0b10000000))
+    #define No_BIT0 0xfe    // 0b11111110
+    #define No_BIT1 0xfd    // 0b11111101
+    #define No_BIT2 0xfb    // 0b11111011
+    #define No_BIT3 0xf7    // 0b11110111
+    #define No_BIT4 0xef    // 0b11101111
+    #define No_BIT5 0xdf    // 0b11011111
+    #define No_BIT6 0xbf    // 0b10111111
+    #define No_BIT7 0x7f    // 0b01111111
 
     #define FLUJO_OUTPUT 0x03 // 00000011
     #define FLUJO_INPUT  0x3c // 00111100
@@ -60,6 +61,8 @@
 
     #define UTILIZAR_DEF_TIPOS_H  Si // <- cambiar
 
+    // apartado de incluciones
+    #include <stddef.h>
     #if UTILIZAR_DEF_TIPOS_H
         #include "DefTipos.h"
     #else
