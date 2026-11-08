@@ -1,9 +1,9 @@
 // LibProcesosWin.h
 #ifndef LIB_PROCESOS_WIN_H
     #define LIB_PROCESOS_WIN_H "NumCab: 4"
-    #define CAMBIO_LIB_PROCESOS_WIN 0
+    #define CAMBIO_LIB_PROCESOS_WIN 2
 
-    #include "DefErrorWin.h"
+    #include "../DefErrorWin.h"
     #include "../../DefGeneral.h"
 
     #define TODAS_LAS_CONSOLAS (CONSOLA_ERROR | CONSOLA_INPUT | CONSOLA_OUTPUT)
