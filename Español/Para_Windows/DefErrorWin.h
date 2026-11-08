@@ -1,7 +1,7 @@
 // DefErrorWin.h
 #ifndef DEF_ERROR_WIN_H
     #define DEF_ERROR_WIN_H "NumCab: 3"
-    #define CAMBIO_DEF_ERROR_WIN 3
+    #define CAMBIO_DEF_ERROR_WIN 4
 
     // Errores definiciones
     //======================================================================
@@ -129,12 +129,19 @@
     #define CerrarManejador_Error_CloseHandle                           0x03//
     //////////////////////////////////////////////////////////////////////////
 
-    // CerrarHiloYProceso(...)
-    //////////////////////////////////////////////////////////////////////
-    #define CerrarHiloYProceso_Error_Estructura_Informacion_NULL         0x01//
-    #define CerrarHiloYProceso_Error_CloseHandle_Proceso                 0x02//
-    #define CerrarHiloYProceso_Error_CloseHandle_Hilo                    0x03//
-    //////////////////////////////////////////////////////////////////////
+    // CerrarManejadoresDeProceso(...)
+    ////////////////////////////////////////////////////////////////////////////
+    #define CerrarManejadoresDeProceso_Error_Estructura_Informacion_NULL  0x01//
+    #define CerrarManejadoresDeProceso_Error_CloseHandle_Proceso          0x02//
+    #define CerrarManejadoresDeProceso_Error_CloseHandle_Hilo             0x03//
+    ////////////////////////////////////////////////////////////////////////////
+
+    // TerminarProceso(...)
+    //////////////////////////////////////////////////////////////
+    #define TerminarProceso_Error_Parametro_Estructura_Null 0x01//
+    #define TerminarProceso_Error_TerminateProcess          0x02//
+    #define TerminarProceso_Error_CerrarManejadorDeProceso  0x03//
+    //////////////////////////////////////////////////////////////
 
     //=========================================================================
 
@@ -151,6 +158,7 @@
     #define Especif_Escribir                    0x09
     #define Especif_CrearProceso                0x0A
     #define Especif_CerrarManejador             0x0B
-    #define Especif_CerrarHiloYProceso          0x0C
+    #define Especif_CerrarManejadoresDeProceso  0x0C
+    #define Especif_TerminarProceso             0x0D
 
 #endif
