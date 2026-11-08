@@ -1,6 +1,7 @@
 // DefErrorWin.h
 #ifndef DEF_ERROR_WIN_H
-    #define DEF_ERROR_WIN_H "V: 1.2 | NumCab: 4"
+    #define DEF_ERROR_WIN_H "NumCab: 3"
+    #define CAMBIO_DEF_ERROR_WIN 3
 
     // Errores definiciones
     //======================================================================
@@ -49,6 +50,17 @@
     #define CambiarCodigoDePagina_Error_CONSOLA_OUTPUT_INPUT_SetConsoleCP       0x08//
     //////////////////////////////////////////////////////////////////////////////////
 
+    // ObtenerCodigoDePagina()
+    /////////////////////////////////////////////////////////////////////////////////
+    #define ObtenerCodigoDePagina_Error_Parametro_Puntero_NULL                 0x01//
+    #define ObtenerCodigoDePagina_Error_GetConsoleCP_Entrada                   0x02//
+    #define ObtenerCodigoDePagina_Error_GetConsoleOutputCP_Salida              0x04//
+    #define ObtenerCodigoDePagina_Error_CodPag_Entrada_Indeterminado           0x08//
+    #define ObtenerCodigoDePagina_Error_CodPag_Salida_Indeterminado            0x10//
+    #define ObtenerCodigoDePagina_Error_CodPag_Entrada_Salida_Indeterminado    0x18//
+    #define ObtenerCodigoDePagina_Error_GetConsoleCP_GetConsoleOutputCP        0x06//
+    #define ObtenerCodigoDePagina_Error_ErrorTotal                             0x1f//
+    /////////////////////////////////////////////////////////////////////////////////
 
     // LimpiarConsola(...);
     ////////////////////////////////////////////////////////////////////////
@@ -72,19 +84,23 @@
 
 
     // Entrada(...);
-    //////////////////////////////////////////////////////////////
-    #define Entrada_Error_Puntero_Estructura_NULL           0x01//
-    #define Entrada_Error_Puntero_BufferEntrada_NULL        0x02//
-    #define Entrada_Error_LongitudBuffer_Menor_A_Dos        0x03//
-    #define Entrada_Error_Lista_De_Mensajes                 0x10//
-    #define Entrada_Error_CapturarTeclaUTF8                 0x04//
-    #define Entrada_ErrorNOFATAL_Salida_Por_Tecla_Especial  0x05//
-    #define Entrada_Error_LimpiarConsola                    0x06//
-    #define Entrada_Error_GetConsoleCP                      0x07//
-    #define Entrada_Error_GetConsoleOutputCP                0x08//
-    #define Entrada_Error_SetConsoleCP                      0x09//
-    #define Entrada_Error_SetConsoleOutputCP                0x0f//
-    //////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////
+    #define Entrada_Error_Puntero_Estructura_NULL            0x01//
+    #define Entrada_Error_Puntero_BufferEntrada_NULL         0x02//
+    #define Entrada_Error_LongitudBuffer_Menor_A_Dos         0x03//
+    #define Entrada_Error_CapturarTeclaUTF8                  0x04//
+    #define Entrada_ErrorNOFATAL_Salida_Por_Tecla_Especial   0x05//
+    #define Entrada_Error_LimpiarConsola                     0x06//
+    #define Entrada_Error_GetConsoleCP                       0x07//
+    #define Entrada_Error_GetConsoleOutputCP                 0x08//
+    #define Entrada_Error_SetConsoleCP                       0x09//
+    #define Entrada_Error_SetConsoleOutputCP                 0x0f//
+    #define Entrada_Error_Lista_De_Mensajes                  0x10//
+    #define Entrada_Error_Escribir_Lista_De_Mensajes         0x11//
+    #define Entrada_Error_Longitud_Lista_Menor_A_Dos         0x12//
+    #define Entrada_Error_Lista_Mensajes_Inicio_Con_Nulo     0x13//
+    #define Entrada_Error_Lista_Mensajes_No_Termina_Con_Nulo 0x14//
+    ///////////////////////////////////////////////////////////////
 
     // Escribir(...)
     //////////////////////////////////////////////////////////////////////
@@ -96,16 +112,29 @@
     //////////////////////////////////////////////////////////////////////
 
     // CrearProceso(...)
-    //
-    #define CrearProceso_Error_Estructura_Parametros_NULL               0x01
-    #define CrearProceso_Error_Estructura_Informacion_NULL              0x02
-    #define CrearProceso_Error_Direccion_NULL                           0x03
-    #define CrearProceso_Error_CreateFileA_MANEJADOR_Invalido           0x04
-    #define CrearProceso_Error_GetStdHandle_Configurar_Herencia_stdErr  0x05
-    #define CrearProceso_Error_GetStdHandle_Configurar_Herencia_stdIn   0x06
-    #define CrearProceso_Error_GetStdHandle_Configurar_Herencia_stdOut  0x07
-    #define CrearProceso_Error_CreateProcessA                           0x08
-    //
+    //////////////////////////////////////////////////////////////////////////
+    #define CrearProceso_Error_Estructura_Parametros_NULL               0x01//
+    #define CrearProceso_Error_Estructura_Informacion_NULL              0x02//
+    #define CrearProceso_Error_Direccion_NULL                           0x03//
+    #define CrearProceso_Error_CreateFileA_MANEJADOR_Invalido           0x04//
+    #define CrearProceso_Error_GetStdHandle_Configurar_Herencia_stdErr  0x05//
+    #define CrearProceso_Error_GetStdHandle_Configurar_Herencia_stdIn   0x06//
+    #define CrearProceso_Error_GetStdHandle_Configurar_Herencia_stdOut  0x07//
+    #define CrearProceso_Error_CreateProcessA                           0x08//
+    //////////////////////////////////////////////////////////////////////////
+
+    // CerrarManejador(...)
+    //////////////////////////////////////////////////////////////////////////
+    #define CerrarManejador_Error_Manejador_Invalido                    0x02//
+    #define CerrarManejador_Error_CloseHandle                           0x03//
+    //////////////////////////////////////////////////////////////////////////
+
+    // CerrarHiloYProceso(...)
+    //////////////////////////////////////////////////////////////////////
+    #define CerrarHiloYProceso_Error_Estructura_Informacion_NULL         0x01//
+    #define CerrarHiloYProceso_Error_CloseHandle_Proceso                 0x02//
+    #define CerrarHiloYProceso_Error_CloseHandle_Hilo                    0x03//
+    //////////////////////////////////////////////////////////////////////
 
     //=========================================================================
 
@@ -121,5 +150,7 @@
     #define Especif_Entrada                     0x08
     #define Especif_Escribir                    0x09
     #define Especif_CrearProceso                0x0A
+    #define Especif_CerrarManejador             0x0B
+    #define Especif_CerrarHiloYProceso          0x0C
 
 #endif
