@@ -11,26 +11,19 @@ int main() {
     PARAMETROS_DEL_PROCESO params = {0};
     INFORMACION_DEL_PROCESO info = {0};
 
-    params._DIRECCION_DEL_EJECUTABLE_ = "C:\\Users\\Usuario\\Desktop\\libreria_leo\\Prueba.exe";
+    params._DIRECCION_DEL_EJECUTABLE_ = "C:\\Users\\Usuario\\Desktop\\...\\ejecutar.exe";
     params.ACTIVAR_CONFIGURACION = Si;
     params.Campo_configuracion.CREAR_VENTANA = Si;
     params.Campo_configuracion.NOMBRAR_VENTANA = Si;
-    params.Campo_configuracion._NOMBRE_DE_LA_VENTANA_ = "Mi ventana de prueba";
+    params.Campo_configuracion._NOMBRE_DE_LA_VENTANA_ = "[Ejecutar.exe]";
     params.Campo_configuracion.PERMITIR_HERENCIA_DE_CONSOLA = No;
 
     Byte_t error = 0;
-    if (error = CrearProceso(
+    if ((error = CrearProceso(
         &params,
         &info
-    ) != 0) {
+    )) != 0) {
         Imprimir("Error al crear el proceso\n", NULL);
-        Imprimir("Código de error: %x", &error);
-        return 1;
-    }
-
-    error = CerrarHiloYProceso(&info);
-    if (error != 0) {
-        Imprimir("Error al cerrar el proceso\n", NULL);
         Imprimir("Código de error: %x", &error);
         return 1;
     }
@@ -42,9 +35,17 @@ int main() {
     entrada._PERMITIR_CONFIGURACION_ = No;
     Entrada(&entrada);
 
+    error = TerminarProceso(&info, 0, Si);
+    if (error != 0) {
+        Imprimir("Error al cerrar el proceso\n", NULL);
+        Imprimir("Código de error: %x", &error);
+        return 1;
+    }
+
     return 0;
 }
 
 /* comando:
-    gcc PruebaWin.c APIGenerali.c ./Para_Windows/LibProcesosWini.c ./Para_Windows/MensajeErrorWini.c ./Para_Windows/Entrada_y_Salida/GeneralI.c -o PruebaWin.exe
+    gcc PruebaWin.c APIGenerali.c ./Para_Windows/Procesos/LibProcesosWinI.c ./Para_Windows/MensajeErrorWinI.c ./Para_Windows/Entrada_y_Salida/GeneralI.c -o PruebaWin.exe
+
 */
