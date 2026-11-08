@@ -218,19 +218,19 @@ Byte_t CerrarHiloYProceso(
 ) {
     #define dInformacion    (*INFORMACION_DEL_PROCESO)
     if (INFORMACION_DEL_PROCESO == NULL)
-        return CerrarProceso_Error_Estructura_Informacion_NULL;
+        return CerrarHiloYProceso_Error_Estructura_Informacion_NULL;
 
     WINBOOL error = 0;
     if (dInformacion.Campo_manejadores.MANEJADOR_DEL_HILO != NULL && dInformacion.Campo_manejadores.MANEJADOR_DEL_HILO != INVALID_HANDLE_VALUE) {
         error = CloseHandle(dInformacion.Campo_manejadores.MANEJADOR_DEL_HILO);
         if (error != 1)
-            return CerrarProceso_Error_CloseHandle_Hilo;
+            return CerrarHiloYProceso_Error_CloseHandle_Hilo;
     }
 
     if (dInformacion.Campo_manejadores.MANEJADOR_DEL_PROCESO != NULL && dInformacion.Campo_manejadores.MANEJADOR_DEL_PROCESO != INVALID_HANDLE_VALUE) {
         error = CloseHandle(dInformacion.Campo_manejadores.MANEJADOR_DEL_PROCESO);
         if (error != 1)
-            return CerrarProceso_Error_CloseHandle_Proceso;
+            return CerrarHiloYProceso_Error_CloseHandle_Proceso;
     }
 
     #undef dInformacion
