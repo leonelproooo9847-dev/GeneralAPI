@@ -104,10 +104,9 @@ Byte_t CrearProceso(
         return CrearProceso_Error_CreateFileA_MANEJADOR_Invalido;
 
     if (crear_ventana) {
-        if (nombrar_ventana == Si) {
-            informacion_1.dwFlags |= STARTF_TITLEISLINKNAME;
+        if (nombrar_ventana == Si)
             informacion_1.lpTitle = nombre_de_ventana;
-        }
+        
         
         if (pos_tam_predeterminado == No) {
             informacion_1.dwFlags |= STARTF_USEPOSITION | STARTF_USESIZE;
