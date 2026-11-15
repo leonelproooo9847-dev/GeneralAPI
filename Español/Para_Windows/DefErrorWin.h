@@ -38,6 +38,8 @@
     #define CapturarTeclaUTF8_Error_Lectura_De_Par_Suplente__Sin_KeyEvent                    0x05//
     #define CapturarTeclaUTF8_Error_Lectura_De_Par_Suplente__KeyDown_Falso                   0x06//
     #define CapturarTeclaUTF8_Error_Lectura_De_Par_Suplente__Suplente_No_Correspondiente     0x07//
+    #define CapturarTeclaUTF8_Error_GetStdHandle_Consola_Salida                              0x08//
+    #define CapturarTeclaUTF8_Error_Lectura_De_Par_Suplente__ReadConsoleInputW               0x09//
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
     // CambiarCodigoDePagina()
@@ -141,6 +143,7 @@
     #define TerminarProceso_Error_Parametro_Estructura_Null 0x01//
     #define TerminarProceso_Error_TerminateProcess          0x02//
     #define TerminarProceso_Error_CerrarManejadorDeProceso  0x03//
+    #define TerminarProceso_Error_WaitForSingleObject       0x04//
     //////////////////////////////////////////////////////////////
 
     //=========================================================================
