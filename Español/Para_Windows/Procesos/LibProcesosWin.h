@@ -1,7 +1,7 @@
 // LibProcesosWin.h
 #ifndef LIB_PROCESOS_WIN_H
     #define LIB_PROCESOS_WIN_H "NumCab: 4"
-    #define CAMBIO_LIB_PROCESOS_WIN 2
+    #define CAMBIO_LIB_PROCESOS_WIN 3
 
     #include "../DefErrorWin.h"
     #include "../../DefGeneral.h"
@@ -17,9 +17,9 @@
 
     //--------------------------------------------------|
 
-    typedef struct _PARAMETROS_DEL_PROCESO {
+    typedef struct {
         char* _DIRECCION_DEL_EJECUTABLE_;
-        char* _LINEA_DE_COMANDOS_;
+        char* _PUNTERO_TEXTO_C__LINEA_DE_COMANDOS_;
         Bool_t ACTIVAR_CONFIGURACION;
         struct {
             Bool_t CREAR_VENTANA;
@@ -44,7 +44,7 @@
 
     //--------------------------------------------------|
 
-    typedef struct _INFORMACION_DEL_PROCESO {
+    typedef struct {
         struct { // no es necesario que lo vea el programador
             MANEJADOR MANEJADOR_DEL_PROCESO;
             MANEJADOR MANEJADOR_DEL_HILO;
