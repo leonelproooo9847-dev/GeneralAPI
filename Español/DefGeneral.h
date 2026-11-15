@@ -1,7 +1,7 @@
 // DefGeneral.h
 #ifndef DEF_GNRAL_H 
     #define DEF_GNRAL_H "NumCab: 1"
-    #define CAMBIO_DEF_GENERAL 1
+    #define CAMBIO_DEF_GENERAL 2
 
     #define WINDOWS_32BIT 0x10
     #define WINDOWS_64BIT 0x20
@@ -78,4 +78,6 @@
         typedef uint32_t U32;
         typedef uint64_t U64;
     #endif
+
+    typedef U32 ADMIN_ERROR;
 #endif
