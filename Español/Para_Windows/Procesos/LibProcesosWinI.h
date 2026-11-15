@@ -2,6 +2,8 @@
 #include <windows.h>
 #include "LibProcesosWin.h"
 
+static ADMIN_ERROR REGISTRO_DE_ERROR_OS_LibProcesos = 0;
+
 Byte_t CerrarManejador(
     MANEJADOR MANEJADOR_A_CERRAR
 ) {
@@ -9,8 +11,10 @@ Byte_t CerrarManejador(
         return CerrarManejador_Error_Manejador_Invalido;
 
     WINBOOL exito = CloseHandle(MANEJADOR_A_CERRAR);
-    if (exito == FALSE)
+    if (exito == FALSE) {
+        REGISTRO_DE_ERROR_OS_LibProcesos = GetLastError();
         return CerrarManejador_Error_CloseHandle;
+    }
     
     return 0;
 }
@@ -47,8 +51,8 @@ Byte_t CrearProceso(
     else
         dir_ejecutable = dParams._DIRECCION_DEL_EJECUTABLE_;
     
-    if (dParams._LINEA_DE_COMANDOS_ != NULL)
-        linea_de_comandos = dParams._LINEA_DE_COMANDOS_;
+    if (dParams._PUNTERO_TEXTO_C__LINEA_DE_COMANDOS_ != NULL)
+        linea_de_comandos = dParams._PUNTERO_TEXTO_C__LINEA_DE_COMANDOS_;
     
     if (dParams.ACTIVAR_CONFIGURACION == Si) {
         
@@ -87,21 +91,28 @@ Byte_t CrearProceso(
     informacion_1.cb = sizeof(STARTUPINFOA);
 
 
+    
     SECURITY_ATTRIBUTES atributos = {0};
     atributos.nLength = sizeof(SECURITY_ATTRIBUTES);
     atributos.bInheritHandle = TRUE;
-    HANDLE NoHeredar = CreateFileA(
-        "NUL",
-        GENERIC_READ | GENERIC_WRITE,
-        FILE_SHARE_READ | FILE_SHARE_WRITE,
-        &atributos,
-        OPEN_EXISTING,
-        FILE_ATTRIBUTE_NORMAL,
-        NULL
-    );
+    HANDLE NoHeredar = NULL;
 
-    if (NoHeredar == NULL || NoHeredar == INVALID_HANDLE_VALUE)
-        return CrearProceso_Error_CreateFileA_MANEJADOR_Invalido;
+
+    if (dParams.ACTIVAR_CONFIGURACION == Si) {
+        NoHeredar = CreateFileA(
+            "NUL",
+            GENERIC_READ | GENERIC_WRITE,
+            FILE_SHARE_READ | FILE_SHARE_WRITE,
+            &atributos,
+            OPEN_EXISTING,
+            FILE_ATTRIBUTE_NORMAL,
+            NULL
+        );
+    
+        if (NoHeredar == NULL || NoHeredar == INVALID_HANDLE_VALUE)
+            return CrearProceso_Error_CreateFileA_MANEJADOR_Invalido;
+    }
+
 
     if (crear_ventana) {
         if (nombrar_ventana == Si)
@@ -167,11 +178,9 @@ Byte_t CrearProceso(
         }
         Heredar = TRUE;
     } else {
-        informacion_1.dwFlags |= STARTF_USESTDHANDLES;
-        informacion_1.hStdError = NoHeredar;
-        informacion_1.hStdInput = NoHeredar;
-        informacion_1.hStdOutput = NoHeredar;
-        Heredar = TRUE;
+        informacion_1.dwFlags = 0;
+        Heredar = FALSE;
+        flags = 0;
     }
 
 
@@ -188,7 +197,9 @@ Byte_t CrearProceso(
         &info_proceso
     );
 
-    CloseHandle(NoHeredar);
+    if (dParams.ACTIVAR_CONFIGURACION == Si)
+        CloseHandle(NoHeredar);
+    
 
     if (exito == FALSE) {
         dInformacion.PROCESO_ID = 0;
@@ -251,12 +262,22 @@ Byte_t TerminarProceso(
         COLOCAR_CODIGO_DE_RETORNO
     )) return TerminarProceso_Error_TerminateProcess;
 
-    if (CERRAR_MANEJADORES_DEL_PROCESO == Si) {
-        Byte_t error = CerrarManejadoresDeProceso(
-            INFO_DEL_PROCESO
-        );
-        if (error != 0) {
-            return TerminarProceso_Error_CerrarManejadorDeProceso;
+    DWORD CodigoRet = WaitForSingleObject(
+        dInformacion.Campo_manejadores.MANEJADOR_DEL_PROCESO,
+        INFINITE
+    );
+
+    if (CodigoRet == WAIT_FAILED)
+        return TerminarProceso_Error_WaitForSingleObject;
+
+    if (CodigoRet == WAIT_OBJECT_0) {
+        if (CERRAR_MANEJADORES_DEL_PROCESO == Si) {
+            Byte_t error = CerrarManejadoresDeProceso(
+                INFO_DEL_PROCESO
+            );
+            if (error != 0) {
+                return TerminarProceso_Error_CerrarManejadorDeProceso;
+            }
         }
     }
 
