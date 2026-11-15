@@ -8,7 +8,7 @@
     // estructuras:
     /*----------------------------------------------------------------------------*/
 
-    typedef struct _COMPROBACION_PARAMs {
+    typedef struct {
         struct {
             const char* _LISTA_DE_TEXTO_C_;
             size_t  _LONGITUD_DE_LA_LISTA_;
