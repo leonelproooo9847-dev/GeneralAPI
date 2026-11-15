@@ -16,6 +16,26 @@ CP_UTF7	        65000	Codificación UTF-7, heredada y desaconsejada para usos nu
 CP_UTF8
 */
 
+
+
+typedef struct {
+    Byte_t REG_CapturarTeclaUTF8;
+    Byte_t REG_CambiarCodigoDePagina;
+    Byte_t REG_ObtenerCodigoDePagina;
+    Byte_t REG_LimpiarConsola;
+    Byte_t REG_Entrada;
+    Byte_t REG_Escribir;
+    struct {
+        ADMIN_ERROR REG_CapturarTeclaUTF8; // ADMIN_ERROR == U32
+        ADMIN_ERROR REG_CambiarCodigoDePagina;
+        ADMIN_ERROR REG_ObtenerCodigoDePagina;
+        ADMIN_ERROR REG_LimpiarConsola;
+        ADMIN_ERROR REG_Escribir;
+    } Campo_registros_os;
+} REGISTROS_EntradaSalida;
+
+static REGISTROS_EntradaSalida REG_EntradaSalida = {0};
+
 //IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
 //IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
 //
@@ -120,6 +140,13 @@ Byte_t CapturarTeclaUTF8(
 
     DWORD cantidad_leidos = 0;
     HANDLE consola_de_entrada = GetStdHandle(STD_INPUT_HANDLE);
+    if (
+        consola_de_entrada == INVALID_HANDLE_VALUE ||
+        consola_de_entrada == NULL
+    ) {
+        // TODO: COLOCAR GetLastError()
+        return CapturarTeclaUTF8_Error_GetStdHandle_Consola_Salida;
+    }
     INPUT_RECORD evento = {0};
 
     KEY_EVENT_RECORD* tecla = NULL;
@@ -132,7 +159,10 @@ Byte_t CapturarTeclaUTF8(
                 1,
                 &cantidad_leidos
             ) == FALSE
-        ) return CapturarTeclaUTF8_Error_ReadConsoleInputW;
+        ) {
+            // TODO: COLOCAR GetLastError()
+            return CapturarTeclaUTF8_Error_ReadConsoleInputW;
+        } 
 
         if (evento.EventType == KEY_EVENT) {
             tecla = &(evento.Event.KeyEvent);
@@ -239,7 +269,10 @@ Byte_t CapturarTeclaUTF8(
                                 1,
                                 &cantidad_leidos
                             ) == FALSE
-                        ) return 0x02;
+                        ) {
+                            // TODO: COLOCAR GetLastError()
+                            return CapturarTeclaUTF8_Error_Lectura_De_Par_Suplente__ReadConsoleInputW;
+                        }
 
                         if (evento.EventType == KEY_EVENT) {
                             tecla = &(evento.Event.KeyEvent);
@@ -281,8 +314,10 @@ Byte_t CapturarTeclaUTF8(
                         );
                     }
 
-                    if (cantidad_de_bytes_escritos == 0)
+                    if (cantidad_de_bytes_escritos == 0) {
+                        // TODO: COLOCAR GetLastError()
                         return CapturarTeclaUTF8_Error_Escritos_Cero;
+                    }
                     else
                         dinfo.BYTES_ESCRITOS = cantidad_de_bytes_escritos;
 
@@ -348,16 +383,24 @@ Byte_t CambiarCodigoDePagina(
     }
 
     if (CONSOLA_A_CAMBIAR == CONSOLA_OUTPUT) {
-        if (SetConsoleOutputCP(CodPag) == FALSE)
+        if (SetConsoleOutputCP(CodPag) == FALSE) {
+            // TODO: COLOCAR GetLastError()
             return CambiarCodigoDePagina_Error_CONSOLA_OUTPUT_SetConsoleOutputCP;
+        }
     } else if (CONSOLA_A_CAMBIAR == CONSOLA_INPUT) {
-        if (SetConsoleCP(CodPag) == FALSE)
+        if (SetConsoleCP(CodPag) == FALSE) {
+            // TODO: COLOCAR GetLastError()
             return CambiarCodigoDePagina_Error_CONSOLA_INPUT_SetConsoleCP;
+        }
     } else if (CONSOLA_A_CAMBIAR == (CONSOLA_OUTPUT | CONSOLA_INPUT)) {
-        if (SetConsoleOutputCP(CodPag) == FALSE)
+        if (SetConsoleOutputCP(CodPag) == FALSE) {
+            // TODO: COLOCAR GetLastError()
             return CambiarCodigoDePagina_Error_CONSOLA_OUTPUT_INPUT_SetConsoleOutputCP;
-        if (SetConsoleCP(CodPag) == FALSE)
+        }
+        if (SetConsoleCP(CodPag) == FALSE) {
+            // TODO: COLOCAR GetLastError()
             return CambiarCodigoDePagina_Error_CONSOLA_OUTPUT_INPUT_SetConsoleCP;
+        }
     } else
         return CambiarCodigoDePagina_Error_Parametro_Consola_Invalido;
     
@@ -380,10 +423,14 @@ Byte_t ObtenerCodigoDePagina(
     UINT CodPag_salida = GetConsoleOutputCP();
     Byte_t retorno = 0;
 
-    if (CodPag_entrada == 0)
+    if (CodPag_entrada == 0) {
+        // TODO: COLOCAR GetLastError()
         retorno |= ObtenerCodigoDePagina_Error_GetConsoleCP_Entrada;       // 0x02
-    if (CodPag_salida == 0)
+    }
+    if (CodPag_salida == 0) {
+        // TODO: COLOCAR GetLastError()
         retorno |= ObtenerCodigoDePagina_Error_GetConsoleOutputCP_Salida;  // 0x04
+    }
 
     switch (CodPag_entrada) {
         case CP_THREAD_ACP: dDatos.COD_PAG_ENTRADA = CodPag_ANSI_SubProceso; break;
@@ -435,34 +482,48 @@ Byte_t LimpiarConsola(
         if (
             Entrada_Estandar == INVALID_HANDLE_VALUE ||
             Entrada_Estandar == NULL
-        ) return LimpiarConsola_Error_GetStdHandle_stdIn;
+        ) {
+            // TODO: COLOCAR GetLastError()
+            return LimpiarConsola_Error_GetStdHandle_stdIn;
+        }
         {
             DWORD modo = 0;
-            if (GetConsoleMode(Entrada_Estandar, &modo) == FALSE)
+            if (GetConsoleMode(Entrada_Estandar, &modo) == FALSE) {
+                // TODO: COLOCAR GetLastError()
                 return LimpiarConsola_Error_stdIn_Sin_Consola;
+            }
         }
 
-        if (FlushConsoleInputBuffer(Entrada_Estandar) == FALSE)
+        if (FlushConsoleInputBuffer(Entrada_Estandar) == FALSE) {
+            // TODO: COLOCAR GetLastError()
             return LimpiarConsola_Error_FlushConsoleInputBuffer_stdIn;
+        }
         
     } else if (CONSOLA_A_LIMPIAR == CONSOLA_OUTPUT) {
         Salida_Estandar = GetStdHandle(STD_OUTPUT_HANDLE);
         if (
             Salida_Estandar == INVALID_HANDLE_VALUE ||
             Salida_Estandar == NULL
-        ) return LimpiarConsola_Error_GetStdHandle_stdOut;
+        ) {
+            // TODO: COLOCAR GetLastError()
+            return LimpiarConsola_Error_GetStdHandle_stdOut;
+        }
         {
             DWORD Modo = 0;
-            if (GetConsoleMode(Salida_Estandar, &Modo) == FALSE)
+            if (GetConsoleMode(Salida_Estandar, &Modo) == FALSE) {
+                // TODO: COLOCAR GetLastError()
                 return LimpiarConsola_Error_stdOut_Sin_Consola;
+            }
         }
 
         CONSOLE_SCREEN_BUFFER_INFO informacion_buffer_consola = {0};
         DWORD cantidad = 0;
         COORD inicio = {0, 0};
 
-        if (GetConsoleScreenBufferInfo(Salida_Estandar, &informacion_buffer_consola) == FALSE)
+        if (GetConsoleScreenBufferInfo(Salida_Estandar, &informacion_buffer_consola) == FALSE) {
+            // TODO: COLOCAR GetLastError()
             return LimpiarConsola_Error_GetConsoleScreemBufferInfo_stdOut;
+        }
 
         DWORD Area_total = ((DWORD)informacion_buffer_consola.dwSize.Y) * ((DWORD)informacion_buffer_consola.dwSize.X);
 
@@ -472,39 +533,55 @@ Byte_t LimpiarConsola(
             Area_total,
             inicio,
             &cantidad
-        ) == FALSE) return LimpiarConsola_Error_FillConsoleCharacterA_stdOut;
-
+        ) == FALSE) {
+            // TODO: COLOCAR GetLastError()
+            return LimpiarConsola_Error_FillConsoleCharacterA_stdOut;
+        }
+            
         if (FillConsoleOutputAttribute(
             Salida_Estandar,
             informacion_buffer_consola.wAttributes,
             Area_total,
             inicio,
             &cantidad
-        ) == FALSE) return LimpiarConsola_Error_FillConsoleAttribute_stdOut;
+        ) == FALSE) {
+            // TODO: COLOCAR GetLastError()
+            return LimpiarConsola_Error_FillConsoleAttribute_stdOut;
+        }
 
         if (SetConsoleCursorPosition(
             Salida_Estandar,
             inicio
-        ) == FALSE) return LimpiarConsola_Error_SetCursor_stdOut;
+        ) == FALSE) {
+            // TODO: COLOCAR GetLastError()
+            return LimpiarConsola_Error_SetCursor_stdOut;
+        }
 
     } else if (CONSOLA_A_LIMPIAR == CONSOLA_ERROR) {
         Error_Estandar  = GetStdHandle(STD_ERROR_HANDLE);
         if (
             Error_Estandar == INVALID_HANDLE_VALUE ||
             Error_Estandar == NULL
-        ) return LimpiarConsola_Error_GetStdHandle_stdErr;
+        ) {
+            // TODO: COLOCAR GetLastError()
+            return LimpiarConsola_Error_GetStdHandle_stdErr;
+        } 
         {
             DWORD Modo = 0;
-            if (GetConsoleMode(Error_Estandar, &Modo) == FALSE)
+            if (GetConsoleMode(Error_Estandar, &Modo) == FALSE) {
+                // TODO: COLOCAR GetLastError()
                 return LimpiarConsola_Error_stdErr_Sin_Consola;
+            }
         }
 
         CONSOLE_SCREEN_BUFFER_INFO informacion_buffer_consola = {0};
         DWORD cantidad = 0;
         COORD inicio = {0, 0};
 
-        if (GetConsoleScreenBufferInfo(Error_Estandar, &informacion_buffer_consola) == FALSE)
+        if (GetConsoleScreenBufferInfo(Error_Estandar, &informacion_buffer_consola) == FALSE) {
+            // TODO: COLOCAR GetLastError()
             return LimpiarConsola_Error_GetConsoleScreemBufferInfo_stdErr;
+        }
 
         DWORD Area_total = ((DWORD)informacion_buffer_consola.dwSize.Y) * ((DWORD)informacion_buffer_consola.dwSize.X);
 
@@ -514,7 +591,10 @@ Byte_t LimpiarConsola(
             Area_total,
             inicio,
             &cantidad
-        ) == FALSE) return LimpiarConsola_Error_FillConsoleCharacterA_stdErr;
+        ) == FALSE) {
+            // TODO: COLOCAR GetLastError()
+            return LimpiarConsola_Error_FillConsoleCharacterA_stdErr;
+        }
 
         if (FillConsoleOutputAttribute(
             Error_Estandar,
@@ -522,12 +602,18 @@ Byte_t LimpiarConsola(
             Area_total,
             inicio,
             &cantidad
-        ) == FALSE) return LimpiarConsola_Error_FillConsoleAttribute_stdErr;
+        ) == FALSE) {
+            // TODO: COLOCAR GetLastError()
+            return LimpiarConsola_Error_FillConsoleAttribute_stdErr;
+        }
 
         if (SetConsoleCursorPosition(
             Error_Estandar,
             inicio
-        ) == FALSE) return LimpiarConsola_Error_SetCursor_stdErr;
+        ) == FALSE) {
+            // TODO: COLOCAR GetLastError()
+            return LimpiarConsola_Error_SetCursor_stdErr;
+        }
 
     } else return LimpiarConsola_Error_Parametro_Invalido;
 
@@ -549,16 +635,22 @@ Byte_t Entrada(
     ///////////configuramos salida y entrada////////
     UINT entrada_antes;
     UINT salida_antes;
-    if ((entrada_antes = GetConsoleCP()) == 0)
+    if ((entrada_antes = GetConsoleCP()) == 0) {
+        // TODO: COLOCAR GetLastError()
         return Entrada_Error_GetConsoleCP;
-    if ((salida_antes = GetConsoleOutputCP()) == 0)
+    }
+    if ((salida_antes = GetConsoleOutputCP()) == 0) {
+        // TODO: COLOCAR GetLastError()
         return Entrada_Error_GetConsoleOutputCP;
+    }
 
     if (SetConsoleCP(CP_UTF8) == FALSE) {
+        // TODO: COLOCAR GetLastError()
         SetConsoleCP(entrada_antes);
         return Entrada_Error_SetConsoleCP;
     }
     if (SetConsoleOutputCP(CP_UTF8) == FALSE) {
+        // TODO: COLOCAR GetLastError()
         SetConsoleCP(entrada_antes);
         SetConsoleOutputCP(salida_antes);
         return Entrada_Error_SetConsoleOutputCP;
@@ -941,11 +1033,14 @@ Byte_t Entrada(
     } //>>>> >>>> >>>> >>>> aquí termina el ELSE <<<< <<<< <<<< <<<<//
 
     if (SetConsoleCP(entrada_antes) == FALSE) {
+        // TODO: COLOCAR GetLastError()
         SetConsoleOutputCP(salida_antes);
         return Entrada_Error_SetConsoleCP;
     }
-    if (SetConsoleOutputCP(salida_antes) == FALSE)
+    if (SetConsoleOutputCP(salida_antes) == FALSE) {
+        // TODO: COLOCAR GetLastError()
         return Entrada_Error_SetConsoleOutputCP;
+    }
 
     #undef BIT_0
     #undef BIT_1
@@ -994,8 +1089,10 @@ Byte_t Escribir(
         NULL
     );
 
-    if (!retorno)
+    if (!retorno) {
+        // TODO: COLOCAR GetLastError()
         retorno = Escribir_Error_WriteFile;
+    }
     else if (escritos != (DWORD)CANTIDAD_DE_BYTES_A_ESCRIBIR)
         retorno = Escribir_ErrorNOFATAL_Escritos_No_Iguales;
     else
