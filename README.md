@@ -8,6 +8,6 @@ Español:
 
 ---
 
-Inglish:
+English:
 
 - A repository where you can expand and create an API for general use.
