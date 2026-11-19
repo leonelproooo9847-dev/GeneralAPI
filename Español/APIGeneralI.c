@@ -1,4 +1,3 @@
-
 #include "APIGeneral.h"
 
 Byte_t SacarDirectorioActual(
@@ -111,8 +110,8 @@ Byte_t CopiarBuffer(
     ) return CopiarBuffer_Error_Longitudes_Buffers_Cero;
 
     if (BUFFER_DESTINO != BUFFER_ORIGEN) {
-        uintptr_t Origen  = (uintptr_t)BUFFER_ORIGEN;
-        uintptr_t Destino = (uintptr_t)BUFFER_DESTINO;
+        UPTR Origen  = (UPTR)BUFFER_ORIGEN;
+        UPTR Destino = (UPTR)BUFFER_DESTINO;
         //==========================================================\ 
         if (Origen > Destino) 
             if ((Destino + LONGITUD_DEL_BUFFER_DESTINO) > Origen)
