@@ -77,7 +77,7 @@
         typedef uint16_t U16;
         typedef uint32_t U32;
         typedef uint64_t U64;
-    #endif
 
-    typedef U32 ADMIN_ERROR;
+        typedef uintptr_t UPTR;
+    #endif
 #endif
