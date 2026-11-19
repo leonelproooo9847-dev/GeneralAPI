@@ -1,7 +1,7 @@
 // DefTipos.h
 #ifndef TIPOS_CAB_H
     #define TIPOS_CAB_H "NumCab: 2"
-    #define CAMBIO_DEF_TIPOS 1
+    #define CAMBIO_DEF_TIPOS 3
 
     #define SOLO_64BIT_SIN_SIGNO 2
     #define SOLO_64BIT_CON_SIGNO 3
@@ -76,6 +76,37 @@
                 #warning "'__UINT64_TYPE__' no está definido por el compilador. Esto no es un error"
             #endif
 
+            #if defined __UINTPTR_TYPE__
+                typedef __UINTPTR_TYPE__ UPTR;
+                #define UPTR_DEFINIDO "esta definido"
+            #else
+                #warning "'__UINTPTR_TYPE__' no está definido por el compilador. Esto no es un error"
+            #endif
+
+            #if defined __SIZEOF_POINTER__
+                #if defined __SIZEOF_INT__ && !(defined UPTR_DEFINIDO)
+                    #if __SIZEOF_POINTER__ == __SIZEOF_INT__
+                        typedef unsigned int UPTR;
+                        #define UPTR_DEFINIDO "esta definido"
+                    #endif
+                #endif
+                #if defined __SIZEOF_LONG__ && !(defined UPTR_DEFINIDO)
+                    #if __SIZEOF_POINTER__ == __SIZEOF_LONG__
+                        typedef unsigned long UPTR;
+                        #define UPTR_DEFINIDO "esta definido"
+                    #endif
+                #endif
+                #if defined __SIZEOF_LONG_LONG__ && !(defined UPTR_DEFINIDO)
+                    #if __SIZEOF_POINTER__ == __SIZEOF_LONG_LONG__
+                        typedef unsigned long long UPTR;
+                        #define UPTR_DEFINIDO "esta definido"
+                    #endif
+                #endif
+            #endif
+
+            #if !(defined UPTR_DEFINIDO)    
+                #error "no se pudo definir UPTR"
+            #endif
             //IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
             //IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
         
