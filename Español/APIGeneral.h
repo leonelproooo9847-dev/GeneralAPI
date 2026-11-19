@@ -1,6 +1,6 @@
 #ifndef API_GENERAL_H
     #define API_GENERAL_H "NumCab: 0"
-    #define CAMBIO_API_GENERAL 1
+    #define CAMBIO_API_GENERAL 2
 
     #include "DefGeneral.h"
     #include "Para_Windows/DefErrorWin.h"
